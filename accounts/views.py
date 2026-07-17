@@ -6,8 +6,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import SignupSerialzier, LoginSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+
 # Create your views here.
 class SignupAPIView(APIView):
+
+    @swagger_auto_schema(request_body=SignupSerialzier,responses={201:"User created successfully"})
     def post(self,request):
         serializer = SignupSerialzier(data=request.data)
 
@@ -28,6 +32,7 @@ class SignupAPIView(APIView):
 
 
 class LoginAPIView(APIView):
+    @swagger_auto_schema(request_body=LoginSerializer,responses={201:LoginSerializer})
     def post(self,request):
         serializer = LoginSerializer(data=request.data)
 

@@ -11,10 +11,13 @@ from .ai_service import review_code
 
 from .models import CodeReview
 
+from drf_yasg.utils import swagger_auto_schema
+
 # Create your views here.
 class SubmitCodeReviewAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(request_body=CodeReviewSerialzier,responses={201:CodeReviewSerialzier})
     def post(self,request):
         serializer = CodeReviewSerialzier(data=request.data)
         
@@ -44,6 +47,7 @@ class SubmitCodeReviewAPIView(APIView):
 class CodeReviewListAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(responses={200:CodeReviewSerialzier(many=True)})
     def get(self,request):
 
         reviews = CodeReview.objects.filter(user=request.user).order_by("-created_at")
@@ -59,6 +63,7 @@ class CodeReviewListAPIView(APIView):
 class CodeReviewDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(responses={200:CodeReviewSerialzier})
     def get(self,request,pk):
 
         review = get_object_or_404(CodeReview,id=pk,user=request.user)
@@ -72,6 +77,7 @@ class CodeReviewDetailAPIView(APIView):
 class CodeReviewUpdateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(request_body=CodeReviewSerialzier,responses={200: CodeReviewSerialzier})
     def put(self,request,pk):
         review = get_object_or_404(CodeReview,id=pk,user=request.user)
 
@@ -96,6 +102,7 @@ class CodeReviewUpdateAPIView(APIView):
 class CodeReviewDeleteAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(responses={204: "Review deleted successfully"})
     def delete(self,request,pk):
         review = get_object_or_404(CodeReview,id=pk,user=request.user)
 
