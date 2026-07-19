@@ -16,8 +16,6 @@ from dotenv import load_dotenv, find_dotenv
 
 from datetime import timedelta
 
-import sys 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(find_dotenv())
@@ -88,7 +86,7 @@ WSGI_APPLICATION = 'aicodereview.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-if "pytest" in sys.modules:
+if os.getenv("GITHUB_ACTIONS") == "true":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -106,7 +104,6 @@ else:
             "PORT": os.getenv("DB_PORT"),
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
