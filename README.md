@@ -1,3 +1,6 @@
+
+![GitHub Actions](https://github.com/tanvi259/AI-Code-Review-Assistant/actions/workflows/django.yml/badge.svg)
+
 # AI Code Review Assistant
 
 ## Overview
