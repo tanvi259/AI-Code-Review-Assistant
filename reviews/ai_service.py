@@ -5,10 +5,10 @@ from google.genai.errors import ServerError
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
 def test_gemini():
 
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    
     response = client.models.generate_content(
         model="models/gemini-3.5-flash",
         contents="Say Hello from Gemini"
@@ -16,6 +16,8 @@ def test_gemini():
     return response.text
 
 def review_code(language,code):
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    
     prompt = f"""
     You are an expert software engineer.
 

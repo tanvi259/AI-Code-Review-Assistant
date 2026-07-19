@@ -30,6 +30,7 @@ jobs:
       - name: Run Migrations
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_ACTIONS: "true"
         run: |
           python manage.py migrate
@@ -37,6 +38,7 @@ jobs:
       - name: Run Pytest
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_ACTIONS: "true"
         run: |
           pytest --cov=accounts --cov=reviews
