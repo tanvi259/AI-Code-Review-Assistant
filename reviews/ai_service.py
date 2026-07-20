@@ -18,19 +18,45 @@ def test_gemini():
 def review_code(language,code):
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     
+    if language.lower() == "python":
+        try:
+            compile(code, "<string>", "exec")
+            syntax_result = "No syntax errors found."
+        except SyntaxError as e:
+            syntax_result = f"SyntaxError: {e}"
+    else:
+        syntax_result = "Syntax check not available."
+
     prompt = f"""
     You are an expert software engineer.
 
-    Review the following {language} code.
+    A syntax check has already been performed by Python itself.
 
-    Respond in this exact format.
+    Syntax Check:
+    {syntax_result}
+
+    Never contradict the syntax check above.
+
+    If the syntax check says "No syntax errors found", do NOT mention any syntax or indentation errors.
+
+    Review only:
+    - code quality
+    - logic
+    - readability
+    - performance
+    - best practices
+
+    Respond exactly in this format.
 
     Summary:
     (2-3 lines)
 
+    Syntax Check:
+    - {syntax_result}
+
     Errors:
-    - Bullet points only.
-    - If there are no errors, write:
+    - Only mention actual logical/runtime errors.
+    - If none:
     - No errors found.
 
     Improvements:
@@ -39,12 +65,9 @@ def review_code(language,code):
     Best Practices:
     - Bullet points only.
 
-    Keep the response concise and beginner friendly.
-
     Code:
     ```{language}
     {code}
-    ```
     """
 
     try:

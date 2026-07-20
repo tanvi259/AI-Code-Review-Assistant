@@ -18,7 +18,10 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(find_dotenv())
+
+if os.getenv("RENDER") != "true":
+    if (BASE_DIR / ".env").exists():
+        load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -32,7 +35,8 @@ DEBUG = os.getenv("DEBUG") == "True"
 if DEBUG:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 else:
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+    allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts.split(",") if host.strip()]
 
 
 # Application definition

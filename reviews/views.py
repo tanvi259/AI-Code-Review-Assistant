@@ -19,15 +19,21 @@ from django.shortcuts import render
 class SubmitCodeReviewAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(request_body=CodeReviewSerialzier,responses={201:CodeReviewSerialzier})
-    def post(self,request):
+    @swagger_auto_schema(
+        request_body=CodeReviewSerialzier,
+        responses={201: CodeReviewSerialzier}
+    )
+    def post(self, request):
         serializer = CodeReviewSerialzier(data=request.data)
-        
+
         if serializer.is_valid():
             language = serializer.validated_data["language"]
             code = serializer.validated_data["code"]
 
-            ai_review = review_code(language, code)
+            try:
+                ai_review = review_code(language, code)
+            except Exception:
+                ai_review = "AI review could not be generated at this time."
 
             serializer.save(
                 user=request.user,
@@ -38,7 +44,7 @@ class SubmitCodeReviewAPIView(APIView):
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        
+
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
@@ -79,26 +85,46 @@ class CodeReviewDetailAPIView(APIView):
 class CodeReviewUpdateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(request_body=CodeReviewSerialzier,responses={200: CodeReviewSerialzier})
-    def put(self,request,pk):
-        review = get_object_or_404(CodeReview,id=pk,user=request.user)
+    @swagger_auto_schema(
+        request_body=CodeReviewSerialzier,
+        responses={200: CodeReviewSerialzier}
+    )
+    def put(self, request, pk):
+        review = get_object_or_404(
+            CodeReview,
+            id=pk,
+            user=request.user
+        )
 
-        serializer = CodeReviewSerialzier(review,data=request.data,partial=True)
+        serializer = CodeReviewSerialzier(
+            review,
+            data=request.data,
+            partial=True
+        )
 
         if serializer.is_valid():
-            language = serializer.validated_data.get("language",review.language)
+            language = serializer.validated_data.get(
+                "language",
+                review.language
+            )
+            code = serializer.validated_data.get(
+                "code",
+                review.code
+            )
 
-            code = serializer.validated_data.get("code",review.code)
-
-            ai_review = review_code(language,code)
+            try:
+                ai_review = review_code(language, code)
+            except Exception:
+                ai_review = "AI review could not be generated at this time."
 
             serializer.save(ai_review=ai_review)
 
             return Response(serializer.data)
-        
+
         return Response(
-            serializer.errors, 
-            status=status.HTTP_400_BAD_REQUEST)
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 #Delete Review API
 class CodeReviewDeleteAPIView(APIView):
