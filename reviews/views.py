@@ -13,6 +13,8 @@ from .models import CodeReview
 
 from drf_yasg.utils import swagger_auto_schema
 
+from django.shortcuts import render 
+
 # Create your views here.
 class SubmitCodeReviewAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -114,3 +116,6 @@ class CodeReviewDeleteAPIView(APIView):
             },
             status=status.HTTP_204_NO_CONTENT
         )
+    
+def home(request):
+    return render(request, "reviews/home.html")

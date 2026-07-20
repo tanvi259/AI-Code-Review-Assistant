@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Code Review Assistant</title>
+
+    <link rel="stylesheet" href="{% static 'reviews/css/style.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🤖 AI Code Review Assistant</h1>
+
+    <p class="description">
+        Review your source code using Google's Gemini AI.
+        Built with Django REST Framework, PostgreSQL, JWT Authentication,
+        Docker and deployed on Render.
+    </p>
+
+    <div class="links">
+
+        <a href="/swagger/" target="_blank">
+            📘 Swagger API
+        </a>
+
+        <a href="/redoc/" target="_blank">
+            📗 ReDoc
+        </a>
+
+        <a href="/admin/" target="_blank">
+            ⚙ Django Admin
+        </a>
+
+    </div>
+
+    <p class="note">
+            Documentation pages open in a new tab.
+    </p>
+
+    <footer>
+
+        <p>
+            Developed by Tanvi
+        </p>
+
+    </footer>
+
+</div>
+
+</body>
+
+</html>

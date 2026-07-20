@@ -42,7 +42,9 @@ def review_code(language,code):
     Keep the response concise and beginner friendly.
 
     Code:
+    ```{language}
     {code}
+    ```
     """
 
     try:
