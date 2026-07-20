@@ -1,11 +1,18 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
 venv/
+__pycache__/
+*.pyc
+
 .env
 .env.docker
-__pycache__/
-*.pyc 
-db.sqlite3 
-notes.md
-.coverage 
-htmlcov/
+
+db.sqlite3
 test_db.sqlite3
+
+.coverage
+htmlcov/
+.pytest_cache/
+
+.vscode/
+.DS_Store
+
+notes.md
